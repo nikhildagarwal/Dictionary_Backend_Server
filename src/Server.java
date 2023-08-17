@@ -7,8 +7,7 @@ import static_type.Type;
 import structure.Definition;
 import structure.Dictionary;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.InetSocketAddress;
 import java.util.*;
 
@@ -42,13 +41,13 @@ public class Server {
                                 "Y.csv",
                                 "Z.csv"};
 
-    private static void buildDict(){
+    private static void buildDict() throws FileNotFoundException {
         TypeArrayExtractor tae = new TypeArrayExtractor();
         int i = 0;
-        int j = 0;
         for(String name: CSVlist){
-            ExtractFileContents extract = new ExtractFileContents(name);
+            ExtractFileContents extract = new ExtractFileContents("./data/"+name);
             ArrayList<String> fileWords = extract.getWords();
+            int j = 0;
             for(String bulk: fileWords){
                 if(!bulk.isEmpty()){
                     if(bulk.charAt(0) == '\"'){
@@ -67,9 +66,9 @@ public class Server {
                     }
                 }
             }
-            i++;
+            i+=j;
         }
-        System.out.println("Words in Dictionary: "+ (i*j));
+        System.out.println("Words in Dictionary: "+ (i));
     }
 
     static class Handler implements HttpHandler {
@@ -77,12 +76,21 @@ public class Server {
         public void handle(HttpExchange exchange) throws IOException {
             String requestPath = exchange.getRequestURI().getPath();
             requestPath = requestPath.substring(1).toUpperCase();
+            String[] parts = requestPath.split("/");
             String response;
-            ArrayList<Definition> returned = dict.getDefinitionList(requestPath);
-            if(returned == null){
-                response = "null";
+            if(parts[0].equals("SEARCH")){
+                try{
+                    ArrayList<Definition> returned = dict.getDefinitionList(parts[1]);
+                    if(returned == null){
+                        response = "null";
+                    }else{
+                        response = returned.toString();
+                    }
+                }catch (Exception e){
+                    response = "Directory Under Development";
+                }
             }else{
-                response = returned.toString();
+                response = "Directory Under Development";
             }
             exchange.sendResponseHeaders(200, response.length());
             OutputStream os = exchange.getResponseBody();
@@ -95,11 +103,8 @@ public class Server {
         buildDict();
         int port = 8000;
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
-
         Handler handle = new Handler();
-
         server.createContext("/",handle);
-
         server.setExecutor(null);
         server.start();
         System.out.println("Server started on port " + port);
