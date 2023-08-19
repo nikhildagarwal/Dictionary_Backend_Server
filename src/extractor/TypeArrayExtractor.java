@@ -5,11 +5,19 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * TypeArrayExtractor Class
+ * Holds Map of all possible word types found in CSV files and points them to a proper Type Enum list conversion.
+ */
 public class TypeArrayExtractor {
 
     private ArrayList<Type> types;
     private static HashMap<String,ArrayList<Type>> mapper;
 
+    /**
+     * Constructor for TypeExtractor
+     * Converts all possible types words in our CSV to an arrayList of acceptable Type Enums
+     */
     public TypeArrayExtractor(){
         mapper = new HashMap<>();
         mapper.put("v. t. / i.",new ArrayList<>(Arrays.asList(Type.TRANSITIVE_VERB,Type.INTRANSITIVE_VERB)));
@@ -309,14 +317,26 @@ public class TypeArrayExtractor {
         mapper.put("a., adv., & n.", new ArrayList<>(Arrays.asList(Type.ADJECTIVE, Type.ADVERB, Type.NOUN)));
     }
 
+    /**
+     * Getter method
+     * @return hashMap
+     */
     private HashMap<String, ArrayList<Type>> getMapper() {
         return mapper;
     }
 
+    /**
+     * Getter method to for the Types of the word
+     * @return ArrayList of Type Enums
+     */
     public ArrayList<Type> getTypes() {
         return types;
     }
 
+    /**
+     * Changes the types of a particular word
+     * @param key String of the key
+     */
     public void setTypes(String key){
         this.types = mapper.get(key);
     }
