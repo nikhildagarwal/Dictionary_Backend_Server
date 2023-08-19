@@ -84,7 +84,11 @@ public class Server {
                     if(returned == null){
                         response = "null";
                     }else{
-                        response = returned.toString();
+                        StringBuilder m = new StringBuilder();
+                        for(Definition d : returned){
+                            m.append(d.toString()).append("\n\n");
+                        }
+                        response = "Word: "+parts[1]+"\n\n"+m;
                     }
                 }catch (Exception e){
                     response = "Directory Under Development";
