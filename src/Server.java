@@ -41,6 +41,10 @@ public class Server {
                                 "Y.csv",
                                 "Z.csv"};
 
+    /**
+     * Initial build method to put all data from CSV files into Dictionary Object
+     * @throws FileNotFoundException Exception Handler
+     */
     private static void buildDict() throws FileNotFoundException {
         TypeArrayExtractor tae = new TypeArrayExtractor();
         int i = 0;
@@ -71,6 +75,9 @@ public class Server {
         System.out.println("Words in Dictionary: "+ (i));
     }
 
+    /**
+     * Handler Class For handling http requests for our server
+     */
     static class Handler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
