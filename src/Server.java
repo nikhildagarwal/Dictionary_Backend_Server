@@ -103,6 +103,12 @@ public class Server {
         }
     }
 
+    /**
+     * Start up the server and load Dictionary data structure
+     * Creates connection to local host port 8000
+     * @param args Input args **NOT USED**
+     * @throws IOException Exception handle
+     */
     public static void main(String[] args) throws IOException {
         buildDict();
         int port = 8000;
