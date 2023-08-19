@@ -75,9 +75,9 @@ public class Definition {
     public String toString(){
         String message = "[";
         message += "Definition: " + definition+", ";
-        String sub = "|";
+        StringBuilder sub = new StringBuilder("|");
         for(Type t: types){
-            sub += t.getString()+"|";
+            sub.append(t.getString()).append("|");
         }
         message += "Type: " + sub + ", ";
         message += "Sentence: " + sentence ;
