@@ -14,32 +14,8 @@ import java.util.*;
 public class Server {
 
     private static Dictionary dict = new Dictionary();
-    private static String[] CSVlist = { "A.csv",
-                                "B.csv",
-                                "C.csv",
-                                "D.csv",
-                                "E.csv",
-                                "F.csv",
-                                "G.csv",
-                                "H.csv",
-                                "I.csv",
-                                "J.csv",
-                                "K.csv",
-                                "L.csv",
-                                "M.csv",
-                                "N.csv",
-                                "O.csv",
-                                "P.csv",
-                                "Q.csv",
-                                "R.csv",
-                                "S.csv",
-                                "T.csv",
-                                "U.csv",
-                                "V.csv",
-                                "W.csv",
-                                "X.csv",
-                                "Y.csv",
-                                "Z.csv"};
+    private static String[] CSVlist = { "A.csv", "B.csv", "C.csv", "D.csv", "E.csv", "F.csv", "G.csv", "H.csv", "I.csv", "J.csv", "K.csv", "L.csv", "M.csv",
+                                        "N.csv", "O.csv", "P.csv", "Q.csv", "R.csv", "S.csv", "T.csv", "U.csv", "V.csv", "W.csv", "X.csv", "Y.csv", "Z.csv"};
 
     /**
      * Initial build method to put all data from CSV files into Dictionary Object
@@ -82,12 +58,12 @@ public class Server {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             String requestPath = exchange.getRequestURI().getPath();
-            requestPath = requestPath.substring(1).toUpperCase();
+            requestPath = requestPath.substring(1);
             String[] parts = requestPath.split("/");
             String response;
-            if(parts[0].equals("SEARCH")){
+            if(parts[0].equals("search")){
                 try{
-                    ArrayList<Definition> returned = dict.getDefinitionList(parts[1]);
+                    ArrayList<Definition> returned = dict.getDefinitionList(parts[1].toUpperCase());
                     if(returned == null){
                         response = "null";
                     }else{
@@ -95,13 +71,20 @@ public class Server {
                         for(Definition d : returned){
                             m.append(d.toString()).append("\n\n");
                         }
-                        response = "Word: "+parts[1]+"\n\n"+m;
+                        response = "Word: "+parts[1].toUpperCase()+"\n\n"+m;
                     }
                 }catch (Exception e){
-                    response = "Directory Under Development";
+                    response = "Invalid Directory";
+                }
+            }else if(parts[0].equals("add")){
+                try{
+                    //response = serverAdd(requestPath);
+                    response = "";
+                }catch (Exception e){
+                    response = "Invalid Directory";
                 }
             }else{
-                response = "Directory Under Development";
+                response = "Invalid Directory";
             }
             exchange.sendResponseHeaders(200, response.length());
             OutputStream os = exchange.getResponseBody();
