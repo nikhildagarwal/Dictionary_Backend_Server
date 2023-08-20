@@ -7,6 +7,7 @@ public enum Type {
     ADJECTIVE("adjective"),
     ADVERB("adverb"),
     PRONOUN("pronoun"),
+    PROPER_NOUN("proper noun"),
     PREPOSITION("preposition"),
     CONJUNCTION("conjunction"),
     INTERJECTION("interjection"),
@@ -33,5 +34,14 @@ public enum Type {
 
     public String getString(){
         return string;
+    }
+
+    public static Type getTypeFromString(String typeString){
+        for(Type t: Type.values()){
+            if(t.getString().equals(typeString)){
+                return t;
+            }
+        }
+        return NONE;
     }
 }

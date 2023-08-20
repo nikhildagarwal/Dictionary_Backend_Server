@@ -30,9 +30,9 @@ public class Dictionary {
      * @param types List of Type Enums
      * @param sentence String sentence
      */
-    public void add(String word, String definition, ArrayList<Type> types, String sentence){
+    public boolean add(String word, String definition, ArrayList<Type> types, String sentence){
         if(word.isEmpty() || definition.isEmpty() || types == null){
-            return;
+            return false;
         }
         Definition def = new Definition(definition,types,sentence);
         char[] characters = word.toCharArray();
@@ -46,7 +46,11 @@ public class Dictionary {
             }
             start = node.getNext();
         }
-        node.getDefinitions().add(def);
+        if(!node.getDefinitions().contains(def)){
+            node.getDefinitions().add(def);
+            return true;
+        }
+        return false;
     }
 
     /**

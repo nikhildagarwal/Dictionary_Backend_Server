@@ -9,6 +9,7 @@ import structure.Dictionary;
 
 import java.io.*;
 import java.net.InetSocketAddress;
+import java.net.URL;
 import java.util.*;
 
 public class Server {
@@ -78,10 +79,9 @@ public class Server {
                 }
             }else if(parts[0].equals("add")){
                 try{
-                    //response = serverAdd(requestPath);
-                    response = "";
+                    response = serverAdd(parts[1]);
                 }catch (Exception e){
-                    response = "Invalid Directory";
+                    response = "Invalid Directory: UNABLE TO ADD WORD & DEFINITION\n(Make sure URL does not contain / or ? characters)";
                 }
             }else{
                 response = "Invalid Directory";
@@ -91,6 +91,19 @@ public class Server {
             os.write(response.getBytes());
             os.close();
         }
+    }
+
+    private static String serverAdd(String requestPath){
+        String[] master = requestPath.split("\\+");
+        ArrayList<Type> types = new ArrayList<>();
+        String[] typeStrings = master[2].split(",");
+        for(String ts: typeStrings){
+            types.add(Type.getTypeFromString(ts.toLowerCase().trim()));
+        }
+        if(dict.add(master[0].toUpperCase(),master[1],types,master[3])){
+            return master[0]+" & definition added successfully!";
+        }
+        return master[0]+" already contains given definition";
     }
 
     /**
