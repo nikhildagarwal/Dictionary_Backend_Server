@@ -16,8 +16,8 @@ import java.util.*;
 public class Server {
 
     private static Dictionary dict = new Dictionary();
-    private static String[] CSVlist = { "A.csv", "B.csv", "C.csv", "D.csv", "E.csv", "F.csv", "G.csv", "H.csv", "I.csv", "J.csv", "K.csv", "L.csv", "M.csv",
-                                        "N.csv", "O.csv", "P.csv", "Q.csv", "R.csv", "S.csv", "T.csv", "U.csv", "V.csv", "W.csv", "X.csv", "Y.csv", "Z.csv"};
+    private static String[] CSVlist = { "A.txt", "B.txt", "C.txt", "D.txt", "E.txt", "F.txt", "G.txt", "H.txt", "I.txt", "J.txt", "K.txt", "L.txt", "M.txt",
+                                        "N.txt", "O.txt", "P.txt", "Q.txt", "R.txt", "S.txt", "T.txt", "U.txt", "V.txt", "W.txt", "X.txt", "Y.txt", "Z.txt"};
 
     /**
      * Initial build method to put all data from CSV files into Dictionary Object
@@ -122,9 +122,32 @@ public class Server {
             types.add(Type.getTypeFromString(ts.toLowerCase().trim()));
         }
         if(dict.add(master[0].toUpperCase(),master[1],types,master[3])){
+            updateCSVFile(master[0],master[1],types,master[3]);
             return master[0]+" & definition added successfully!";
         }
         return master[0]+" already contains given definition";
+    }
+
+    private static void updateCSVFile(String word, String def, ArrayList<Type> types, String sentence){
+        String filePath = "./data/"+ word.substring(0,1).toUpperCase() +".txt";
+        try {
+            FileWriter fileWriter = new FileWriter(filePath, true);
+            StringBuilder sb = new StringBuilder();
+            int l = types.size();
+            for(int i = 0;i<l;i++){
+                if(i+1 == l){
+                    sb.append(types.get(i).getString());
+                }else{
+                    sb.append(types.get(i).getString());
+                    sb.append(",");
+                }
+            }
+            String message = word+"("+sb+")"+def+"\n\n";
+            fileWriter.append(message);
+            fileWriter.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

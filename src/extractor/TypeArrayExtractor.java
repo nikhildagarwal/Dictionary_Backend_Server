@@ -339,6 +339,13 @@ public class TypeArrayExtractor {
      */
     public void setTypes(String key){
         this.types = mapper.get(key);
+        if(types ==null){
+            String[] typeStrings = key.split(",");
+            types = new ArrayList<>();
+            for(String ts: typeStrings){
+                types.add(Type.getTypeFromString(ts));
+            }
+        }
     }
 
 }
