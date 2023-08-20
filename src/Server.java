@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import extractor.ExtractFileContents;
 import extractor.TypeArrayExtractor;
 import static_type.Type;
+import structure.DNode;
 import structure.Definition;
 import structure.Dictionary;
 
@@ -83,6 +84,20 @@ public class Server {
                 }catch (Exception e){
                     response = "Invalid Directory: UNABLE TO ADD WORD & DEFINITION\n(Make sure URL does not contain / or ? characters)";
                 }
+            }else if(parts[0].equals("list")){
+                try{
+                    if(parts.length<2){
+                        response = "Must provide a prefix to search for in the dictionary";
+                    }else{
+                        response = dict.getList(parts[1].toUpperCase()).toString();
+                        if(response.isEmpty()){
+                            response = "No words found with prefix: "+parts[1];
+                        }
+                    }
+                }catch (Exception e){
+                    response = "No words found with prefix: "+parts[1];
+                }
+
             }else{
                 response = "Invalid Directory";
             }
@@ -93,6 +108,12 @@ public class Server {
         }
     }
 
+    /**
+     * Method to add data given in URL to Dictionary Object
+     * If URL data is invalid or syntax is incorrect, handles error and returns "Invalid Directory" message
+     * @param requestPath String request Path
+     * @return message based on definition added or not
+     */
     private static String serverAdd(String requestPath){
         String[] master = requestPath.split("\\+");
         ArrayList<Type> types = new ArrayList<>();

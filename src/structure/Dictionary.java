@@ -5,6 +5,7 @@ import static_type.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 /**
  * Custom Dictionary Data Structure
@@ -149,6 +150,46 @@ public class Dictionary {
     @Override
     public String toString(){
         return root.toString();
+    }
+
+    public ArrayList<String> getList(String prefix){
+        ArrayList<String> list = new ArrayList<>();
+        HashMap<Character,DNode> start = root;
+        if(prefix.isEmpty()){
+            for(Map.Entry<Character,DNode> entry: start.entrySet()){
+                dfs(list,entry.getKey(),entry.getValue(), "");
+            }
+        }else{
+            char[] characters = prefix.toCharArray();
+            DNode node = null;
+            String sb = "";
+            for(char c: characters){
+                sb += c;
+                node = start.get(c);
+                if(node == null){
+                    return null;
+                }
+                start = node.getNext();
+            }
+            for(Map.Entry<Character,DNode> entry: start.entrySet()){
+                dfs(list,entry.getKey(), entry.getValue(),sb);
+            }
+        }
+        return list;
+    }
+
+    private static void dfs(ArrayList<String> list, Character character, DNode node, String sb){
+        if(node==null){
+            return;
+        }
+        sb+=character;
+        if(!node.getDefinitions().isEmpty()){
+            list.add(sb);
+        }
+        HashMap<Character,DNode> start = node.getNext();
+        for(Map.Entry<Character,DNode> entry: start.entrySet()){
+            dfs(list,entry.getKey(),entry.getValue(),sb);
+        }
     }
 
 }
