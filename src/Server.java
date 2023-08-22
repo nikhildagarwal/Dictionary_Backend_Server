@@ -4,13 +4,11 @@ import com.sun.net.httpserver.HttpExchange;
 import extractor.ExtractFileContents;
 import extractor.TypeArrayExtractor;
 import static_type.Type;
-import structure.DNode;
 import structure.Definition;
 import structure.Dictionary;
 
 import java.io.*;
 import java.net.InetSocketAddress;
-import java.net.URL;
 import java.util.*;
 
 public class Server {
@@ -57,7 +55,7 @@ public class Server {
             }
             i+=j;
         }
-        System.out.println("Words in Dictionary: "+ (i));
+        System.out.println("Definitions in Dictionary: "+ (i));
     }
 
     /**
