@@ -36,14 +36,21 @@ public class Server {
                         int l = bulk.length();
                         bulk = bulk.substring(1,l-1);
                     }
-                    String[] parts = bulk.replace("(",")").split("\\)");
+                    String[] master = bulk.split("%");
+                    String sentence;
+                    if(master.length == 1){
+                        sentence = null;
+                    }else{
+                        sentence = master[1];
+                    }
+                    String[] parts = master[0].replace("(",")").split("\\)");
                     if(parts.length>=3){
                         String word = parts[0].trim().toUpperCase();
                         String typeCode = parts[1].trim();
                         String def = parts[2].trim();
                         tae.setTypes(typeCode);
                         ArrayList<Type> types = tae.getTypes();
-                        dict.add(word,def,types,null);
+                        dict.add(word,def,types,sentence);
                         j++;
                     }
                 }
@@ -149,7 +156,7 @@ public class Server {
                     sb.append(",");
                 }
             }
-            String message = word+"("+sb+")"+def+"\n\n";
+            String message = word+"("+sb+")"+def+"%"+sentence+"\n\n";
             fileWriter.append(message);
             fileWriter.close();
         } catch (Exception e) {
