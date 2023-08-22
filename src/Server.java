@@ -122,13 +122,20 @@ public class Server {
             types.add(Type.getTypeFromString(ts.toLowerCase().trim()));
         }
         if(dict.add(master[0].toUpperCase(),master[1],types,master[3])){
-            updateCSVFile(master[0],master[1],types,master[3]);
+            updateTextFile(master[0],master[1],types,master[3]);
             return master[0]+" & definition added successfully!";
         }
         return master[0]+" already contains given definition";
     }
 
-    private static void updateCSVFile(String word, String def, ArrayList<Type> types, String sentence){
+    /**
+     * Updates TEXT files and adds word and definition to file
+     * @param word String word
+     * @param def String definition
+     * @param types List of Type ENUMS
+     * @param sentence String Sentence
+     */
+    private static void updateTextFile(String word, String def, ArrayList<Type> types, String sentence){
         String filePath = "./data/"+ word.substring(0,1).toUpperCase() +".txt";
         try {
             FileWriter fileWriter = new FileWriter(filePath, true);
