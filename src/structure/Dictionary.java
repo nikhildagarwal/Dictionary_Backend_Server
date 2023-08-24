@@ -171,6 +171,9 @@ public class Dictionary {
                 }
                 start = node.getNext();
             }
+            if(node.getDefinitions()!=null && !node.getDefinitions().isEmpty()){
+                list.add(prefix.toUpperCase());
+            }
             for(Map.Entry<Character,DNode> entry: start.entrySet()){
                 dfs(list,entry.getKey(), entry.getValue(),sb);
             }
