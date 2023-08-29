@@ -32,6 +32,7 @@ public class Dictionary {
      * @param sentence String sentence
      */
     public boolean add(String word, String definition, ArrayList<Type> types, String sentence){
+        long s = System.nanoTime();
         if(word.isEmpty() || definition.isEmpty() || types == null){
             return false;
         }
@@ -49,6 +50,8 @@ public class Dictionary {
         }
         if(!node.getDefinitions().contains(def)){
             node.getDefinitions().add(def);
+            long end = System.nanoTime();
+            System.out.println(word+": "+(end-s)+" ns");
             return true;
         }
         return false;
