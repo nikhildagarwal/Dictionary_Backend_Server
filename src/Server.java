@@ -108,11 +108,17 @@ public class Server {
                 message += "Welcome to nikhildagarwal's Dictionary Server!\n";
                 message += "Enter URLs to interact with the server. Although Directories are still in development, The server currently has 3 fully functional URLs.\n\n";
                 message += "1.  http://localhost:8000/search/...\n\n        Enter a word to search for in place of ...\n\n        Example: http://localhost:8000/search/bottle\n\n";
-                message += "2.  http://localhost:8000/add/word_+def_+type1,type2,type3+sen_\n\n        Fill in word_ as the word you want to add a definition for\n        Fill in def_ with the definition of the word\n        Fill in the types. Must be separated by commas if multiple\n        Finally, fill in sen_ with the sentence\n\n        Example: http://localhost:8000/add/speaker+Device used to play sounds+noun+I use a speaker to play music.\n\n";
+                message += "2.  http://localhost:8000/add/word+def+type1,type2,type3+sentence\n\n        Fill in word_ as the word you want to add a definition for\n        Fill in def_ with the definition of the word\n        Fill in the types. Must be separated by commas if multiple\n        Finally, fill in sen_ with the sentence\n\n        Example: http://localhost:8000/add/speaker+Device used to play sounds+noun+I use a speaker to play music.\n\n";
                 message += "3.  http://localhost:8000/list/...\n\n        Enter a prefix to display all words in the Dictionary with the given prefix.\n\n        Example: http://localhost:8000/list/semi\n";
                 response = message;
             }else{
-                response = "Invalid Directory";
+                if(parts[0].isEmpty()) {
+                    exchange.getResponseHeaders().set("Location", "http://localhost:8000/home");
+                    exchange.sendResponseHeaders(302, -1);
+                    return;
+                }else{
+                    response = "Invalid Directory";
+                }
             }
             exchange.sendResponseHeaders(200, response.length());
             OutputStream os = exchange.getResponseBody();
